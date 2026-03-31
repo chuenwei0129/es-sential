@@ -16,28 +16,44 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "default": "./dist/index.js"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
     "./array": {
-      "types": "./dist/array/index.d.ts",
-      "import": "./dist/array/index.js",
-      "require": "./dist/array/index.cjs",
-      "default": "./dist/array/index.js"
+      "import": {
+        "types": "./dist/array/index.d.ts",
+        "default": "./dist/array/index.js"
+      },
+      "require": {
+        "types": "./dist/array/index.d.cts",
+        "default": "./dist/array/index.cjs"
+      }
     },
     "./object": {
-      "types": "./dist/object/index.d.ts",
-      "import": "./dist/object/index.js",
-      "require": "./dist/object/index.cjs",
-      "default": "./dist/object/index.js"
+      "import": {
+        "types": "./dist/object/index.d.ts",
+        "default": "./dist/object/index.js"
+      },
+      "require": {
+        "types": "./dist/object/index.d.cts",
+        "default": "./dist/object/index.cjs"
+      }
     },
     "./string": {
-      "types": "./dist/string/index.d.ts",
-      "import": "./dist/string/index.js",
-      "require": "./dist/string/index.cjs",
-      "default": "./dist/string/index.js"
+      "import": {
+        "types": "./dist/string/index.d.ts",
+        "default": "./dist/string/index.js"
+      },
+      "require": {
+        "types": "./dist/string/index.d.cts",
+        "default": "./dist/string/index.cjs"
+      }
     },
     "./package.json": "./package.json"
   },
