@@ -1,6 +1,6 @@
 {
   "name": "@c6i/es-sential",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "现代 JavaScript/TypeScript 工具函数库",
   "license": "MIT",
   "author": "c6i <chuenwei0129@gmail.com>",
