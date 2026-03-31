@@ -21,6 +21,38 @@
 | 代码规范 | `Biome` | 取代 ESLint+Prettier，一体式工具，性能更好 |
 | 版本管理 | `changesets` | 专业版本管理和 Changelog 生成 |
 | 包管理 | `pnpm` | 已全局使用，速度更快，节省磁盘 |
+| Git Hooks | `husky` + `lint-staged` | 提交前自动检查，确保代码质量 |
+
+### husky + lint-staged 配置
+```json
+// package.json
+{
+  "lint-staged": {
+    "*.{ts,js}": ["biome check --write", "biome format --write"],
+    "*.{json,md}": ["biome format --write"]
+  },
+  "scripts": {
+    "prepare": "husky" // 安装时自动初始化 hooks
+  }
+}
+```
+
+```bash
+# .husky/pre-commit
+pnpm exec lint-staged
+
+# .husky/pre-push
+pnpm run typecheck && pnpm run test:ci
+```
+
+**执行流程**：
+- `pre-commit`: lint-staged 只检查**暂存区**文件，快速格式化 + 代码规范检查
+- `pre-push`: 完整类型检查 + 单元测试，确保推送安全
+
+**初始化**（安装依赖后执行一次）：
+```bash
+pnpm exec husky init
+```
 
 ## 项目结构
 
@@ -28,29 +60,31 @@
 es-sential/
 ├── src/                      # 源代码
 │   ├── index.ts              # 主入口，统一导出
+│   ├── index.test.ts         # 主入口测试
 │   ├── array/                # 数组工具
-│   │   ├── index.ts
+│   │   ├── index.ts          # 统一导出
 │   │   ├── chunk.ts          # 分割数组
-│   │   └── uniq.ts           # 去重
+│   │   ├── chunk.test.ts     # chunk 单元测试
+│   │   ├── uniq.ts           # 去重
+│   │   └── uniq.test.ts      # uniq 单元测试
 │   ├── object/               # 对象工具
-│   │   ├── index.ts
+│   │   ├── index.ts          # 统一导出
 │   │   ├── pick.ts           # 选取属性
-│   │   └── omit.ts           # 排除属性
+│   │   ├── pick.test.ts      # pick 单元测试
+│   │   ├── omit.ts           # 排除属性
+│   │   └── omit.test.ts      # omit 单元测试
 │   └── string/               # 字符串工具
-│       ├── index.ts
+│       ├── index.ts          # 统一导出
 │       ├── camelCase.ts      # 转驼峰
-│       └── kebabCase.ts      # 转短横线
+│       ├── camelCase.test.ts # camelCase 单元测试
+│       ├── kebabCase.ts      # 转短横线
+│       └── kebabCase.test.ts # kebabCase 单元测试
 ├── dist/                     # 构建输出 (gitignore)
-├── tests/                    # 测试文件
-│   ├── array.test.ts
-│   ├── object.test.ts
-│   └── string.test.ts
 ├── .github/
 │   └── workflows/
 │       └── release.yml       # CI/CD 自动发布
 ├── package.json
-├── tsconfig.json             # 类型检查配置
-├── tsconfig.build.json       # 构建专用配置
+├── tsconfig.json             # TypeScript 配置
 ├── tsup.config.ts            # 构建配置
 ├── biome.json                # 代码规范配置
 ├── vitest.config.ts          # 测试配置
@@ -67,34 +101,66 @@ es-sential/
   "version": "0.0.1",
   "description": "现代 JavaScript/TypeScript 工具函数库",
   "type": "module",
+  "sideEffects": false,
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": ["dist", "LICENSE", "README.md"],
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "default": "./dist/index.js"
+    },
+    "./array": {
+      "types": "./dist/array/index.d.ts",
+      "import": "./dist/array/index.js",
+      "require": "./dist/array/index.cjs",
+      "default": "./dist/array/index.js"
+    },
+    "./object": {
+      "types": "./dist/object/index.d.ts",
+      "import": "./dist/object/index.js",
+      "require": "./dist/object/index.cjs",
+      "default": "./dist/object/index.js"
+    },
+    "./string": {
+      "types": "./dist/string/index.d.ts",
+      "import": "./dist/string/index.js",
+      "require": "./dist/string/index.cjs",
+      "default": "./dist/string/index.js"
     },
     "./package.json": "./package.json"
   },
-  "files": ["dist", "README.md", "LICENSE"],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
     "test": "vitest",
     "test:ci": "vitest run",
+    "test:types": "vitest typecheck",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
     "lint:fix": "biome check . --write",
     "format": "biome format . --write",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "pnpm run build && changeset publish"
+    "release": "pnpm run build && changeset publish",
+    "prepublishOnly": "pnpm build && attw --pack . && publint",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,js}": ["biome check --write", "biome format --write"],
+    "*.{json,md}": ["biome format --write"]
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.x",
     "@biomejs/biome": "^1.x",
     "@changesets/cli": "^2.x",
+    "expect-type": "^1.x",
+    "husky": "^9.x",
+    "lint-staged": "^15.x",
+    "publint": "^0.x",
     "tsup": "^8.x",
     "typescript": "^5.x",
     "vitest": "^3.x"
@@ -123,17 +189,34 @@ es-sential/
 ## 构建配置详解
 
 ### tsup.config.ts
-- 输入: `src/index.ts`
-- 输出格式: ESM + CJS + IIFE
-- 类型定义: 自动生成
-- 源码映射: 启用
-- Tree-shaking: 启用
+```typescript
+import { defineConfig } from 'tsup'
 
-### tsconfig.json
+export default defineConfig({
+  entry: {
+    'index': 'src/index.ts',
+    'array/index': 'src/array/index.ts',
+    'object/index': 'src/object/index.ts',
+    'string/index': 'src/string/index.ts',
+  },
+  format: ['esm', 'cjs'],
+  dts: true,
+  splitting: true,
+  sourcemap: true,
+  clean: true,
+})
+```
+
+**关键配置说明**：
+- `entry` 使用**对象形式**，确保输出路径匹配 exports 配置（如 `dist/array/index.js`）
+- `splitting` 启用代码分割，支持按需加载
+- `clean` 构建前清理 dist 目录
+
+### tsconfig.json (单一配置)
 - 严格模式: 启用
 - ES2022 目标
 - 模块解析: bundler
-- 声明文件输出
+- 包含 src/ 和测试文件类型检查
 
 ## 测试策略
 
@@ -154,19 +237,32 @@ es-sential/
 
 | 文件路径 | 类型 | 说明 |
 |---------|------|------|
-| `src/index.ts` | 新建 | 主入口导出 |
-| `src/array/*.ts` | 新建 | 数组工具函数 |
-| `src/object/*.ts` | 新建 | 对象工具函数 |
-| `src/string/*.ts` | 新建 | 字符串工具函数 |
-| `tests/*.test.ts` | 新建 | 测试文件 |
+| `src/index.ts` | 新建 | 主入口统一导出 |
+| `src/index.test.ts` | 新建 | 主入口测试 |
+| `src/array/index.ts` | 新建 | 数组工具统一导出 |
+| `src/array/chunk.ts` | 新建 | chunk 函数实现 |
+| `src/array/chunk.test.ts` | 新建 | chunk 单元测试 |
+| `src/array/uniq.ts` | 新建 | uniq 函数实现 |
+| `src/array/uniq.test.ts` | 新建 | uniq 单元测试 |
+| `src/object/index.ts` | 新建 | 对象工具统一导出 |
+| `src/object/pick.ts` | 新建 | pick 函数实现 |
+| `src/object/pick.test.ts` | 新建 | pick 单元测试 |
+| `src/object/omit.ts` | 新建 | omit 函数实现 |
+| `src/object/omit.test.ts` | 新建 | omit 单元测试 |
+| `src/string/index.ts` | 新建 | 字符串工具统一导出 |
+| `src/string/camelCase.ts` | 新建 | camelCase 函数实现 |
+| `src/string/camelCase.test.ts` | 新建 | camelCase 单元测试 |
+| `src/string/kebabCase.ts` | 新建 | kebabCase 函数实现 |
+| `src/string/kebabCase.test.ts` | 新建 | kebabCase 单元测试 |
 | `tsconfig.json` | 新建 | TypeScript 配置 |
-| `tsconfig.build.json` | 新建 | 构建专用 TS 配置 |
 | `tsup.config.ts` | 新建 | 构建工具配置 |
 | `vitest.config.ts` | 新建 | 测试配置 |
 | `biome.json` | 新建 | 代码规范配置 |
 | `.changeset/config.json` | 新建 | 版本管理配置 |
 | `.github/workflows/release.yml` | 新建 | CI/CD 配置 |
-| `package.json` | 修改 | 更新脚本和配置 |
+| `.husky/pre-commit` | 新建 | Git pre-commit hook |
+| `.husky/pre-push` | 新建 | Git pre-push hook |
+| `package.json` | 修改 | 更新脚本、lint-staged 和依赖 |
 | `README.md` | 新建 | 项目文档 |
 
 ## 验证方式
@@ -175,12 +271,6 @@ es-sential/
 2. 类型无误: `pnpm run typecheck` 无错误
 3. 测试通过: `pnpm run test:ci` 全部通过
 4. 代码规范: `pnpm run lint` 无错误
-5. 本地测试安装:
-   ```bash
-   cd /tmp && mkdir test-project && cd test-project && pnpm init
-   pnpm add /Users/chuenwei/Desktop/es-sential
-   node -e "const { chunk } = require('@c6i/es-sential'); console.log(chunk([1,2,3,4], 2))"
-   ```
 
 ## 下一步行动
 
