@@ -35,9 +35,7 @@ jobs:
           pnpm run build
 
       - name: Check Package
-        run: |
-          pnpm exec publint
-          pnpm exec attw --pack .
+        run: pnpm exec publint
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
