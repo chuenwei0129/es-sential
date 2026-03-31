@@ -12,14 +12,16 @@
 export function kebabCase(str: string): string {
   if (!str) return ''
 
-  return str
-    // 处理连续大写后接小写的情况：HTML + Element → HTML + - + Element
-    .replace(/(?<=[A-Z])(?=[A-Z][a-z])/g, '-')
-    // 处理小写后接大写的情况：camelCase → camel-Case
-    .replace(/(?<=[a-z])(?=[A-Z])/g, '-')
-    // 按非字母数字分割
-    .split(/[^a-zA-Z0-9]+/g)
-    .filter(Boolean)
-    .map((word) => word.toLowerCase())
-    .join('-')
+  return (
+    str
+      // 处理连续大写后接小写的情况：HTML + Element → HTML + - + Element
+      .replace(/(?<=[A-Z])(?=[A-Z][a-z])/g, '-')
+      // 处理小写后接大写的情况：camelCase → camel-Case
+      .replace(/(?<=[a-z])(?=[A-Z])/g, '-')
+      // 按非字母数字分割
+      .split(/[^a-zA-Z0-9]+/g)
+      .filter(Boolean)
+      .map((word) => word.toLowerCase())
+      .join('-')
+  )
 }

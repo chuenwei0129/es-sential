@@ -15,11 +15,11 @@ export function camelCase(str: string): string {
   const words = str.split(/[^a-zA-Z0-9]+/g).filter(Boolean)
   if (words.length === 0) return ''
   if (words.length === 1) {
-    return words[0]!.toLowerCase()
+    return words[0]?.toLowerCase()
   }
 
   return (
-    words[0]!.toLowerCase() +
+    words[0]?.toLowerCase() +
     words
       .slice(1)
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())

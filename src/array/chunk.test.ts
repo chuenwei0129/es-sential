@@ -33,7 +33,10 @@ describe('chunk', () => {
   it('should handle exact division', () => {
     // 边界情况：刚好整除
     const result = chunk([1, 2, 3, 4], 2)
-    expect(result).toEqual([[1, 2], [3, 4]])
+    expect(result).toEqual([
+      [1, 2],
+      [3, 4],
+    ])
   })
 
   it('should handle size of 1', () => {
@@ -45,6 +48,9 @@ describe('chunk', () => {
   it('should handle non-integer elements', () => {
     // 类型测试：字符串数组
     const result = chunk(['a', 'b', 'c', 'd'], 2)
-    expect(result).toEqual([['a', 'b'], ['c', 'd']])
+    expect(result).toEqual([
+      ['a', 'b'],
+      ['c', 'd'],
+    ])
   })
 })
