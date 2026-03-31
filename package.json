@@ -9,7 +9,11 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist", "LICENSE", "README.md"],
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -54,8 +58,13 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "*.{ts,js}": ["biome check --write", "biome format --write"],
-    "*.{json,md}": ["biome format --write"]
+    "*.{ts,js}": [
+      "biome check --write",
+      "biome format --write"
+    ],
+    "*.{json,md}": [
+      "biome format --write"
+    ]
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.2",
