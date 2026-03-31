@@ -8,7 +8,11 @@ export default defineConfig({
     'string/index': 'src/string/index.ts',
   },
   format: ['esm', 'cjs'],
-  dts: true,
+  dts: {
+    compilerOptions: {
+      ignoreDeprecations: '6.0',
+    },
+  },
   splitting: true,
   sourcemap: true,
   clean: true,
