@@ -1,4 +1,4 @@
-<h1 align="center">@c6i/es-sential</h1>
+<h1 align="center">es-sential</h1>
 
 <p align="center">
 <strong>现代 JavaScript/TypeScript 工具库</strong><br/>
@@ -25,7 +25,7 @@
 
 **es-sential**（essential：必要的）—— 名字的创意既表达了"这是必需的"，又巧妙嵌入了"ES"（代表 ECMAScript），一语双关。
 
-就像这个库里的工具函数——你本来可以手写，但有它更省事。
+就像这个库里的工具函数都是 essential。
 
 ## 特点
 
