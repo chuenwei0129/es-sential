@@ -10,6 +10,9 @@
  * 3. slice(i, i + size) 截取每块，自动处理边界
  */
 export function chunk<T>(array: readonly T[], size: number): T[][] {
+  if (!Number.isFinite(size) || size <= 0 || !Number.isInteger(size)) {
+    throw new Error('chunk size must be a positive integer')
+  }
   const result: T[][] = []
   for (let i = 0; i < array.length; i += size) {
     result.push(array.slice(i, i + size))

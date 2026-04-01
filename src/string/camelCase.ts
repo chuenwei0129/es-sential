@@ -12,17 +12,23 @@
 export function camelCase(str: string): string {
   if (!str) return ''
 
-  const words = str.split(/[^a-zA-Z0-9]+/g).filter(Boolean)
+  // 使用 Unicode 感知的分割：匹配任何非字母数字字符
+  const words = str.split(/[^\p{L}\p{N}]+/gu).filter(Boolean)
   if (words.length === 0) return ''
   if (words.length === 1) {
-    return words[0]?.toLowerCase()
+    return words[0].toLowerCase()
   }
 
   return (
-    words[0]?.toLowerCase() +
+    words[0].toLowerCase() +
     words
       .slice(1)
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .map((word) => {
+        // 处理首字符（可能是 Unicode）
+        const firstChar = String.fromCodePoint(word.codePointAt(0) ?? 0)
+        const rest = word.slice(firstChar.length)
+        return firstChar.toUpperCase() + rest.toLowerCase()
+      })
       .join('')
   )
 }

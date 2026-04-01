@@ -53,4 +53,24 @@ describe('chunk', () => {
       ['c', 'd'],
     ])
   })
+
+  it('should throw on zero size', () => {
+    expect(() => chunk([1, 2, 3], 0)).toThrow('chunk size must be a positive integer')
+  })
+
+  it('should throw on negative size', () => {
+    expect(() => chunk([1, 2, 3], -1)).toThrow('chunk size must be a positive integer')
+  })
+
+  it('should throw on non-integer size', () => {
+    expect(() => chunk([1, 2, 3], 2.5)).toThrow('chunk size must be a positive integer')
+  })
+
+  it('should throw on NaN', () => {
+    expect(() => chunk([1, 2, 3], NaN)).toThrow('chunk size must be a positive integer')
+  })
+
+  it('should throw on Infinity', () => {
+    expect(() => chunk([1, 2, 3], Infinity)).toThrow('chunk size must be a positive integer')
+  })
 })

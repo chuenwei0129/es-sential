@@ -15,9 +15,9 @@ export function kebabCase(str: string): string {
   return (
     str
       // 处理连续大写后接小写的情况：HTML + Element → HTML + - + Element
-      .replace(/(?<=[A-Z])(?=[A-Z][a-z])/g, '-')
+      .replace(/([A-Z])([A-Z][a-z])/g, '$1-$2')
       // 处理小写后接大写的情况：camelCase → camel-Case
-      .replace(/(?<=[a-z])(?=[A-Z])/g, '-')
+      .replace(/([a-z])([A-Z])/g, '$1-$2')
       // 按非字母数字分割
       .split(/[^a-zA-Z0-9]+/g)
       .filter(Boolean)

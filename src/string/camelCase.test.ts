@@ -51,4 +51,15 @@ describe('camelCase', () => {
     const result = camelCase('Hello World')
     expect(result).toBe('helloWorld')
   })
+
+  it('should handle Unicode characters', () => {
+    // Unicode 字母应该被正确处理
+    const result = camelCase('こんにちは 世界')
+    expect(result).toBe('こんにちは世界')
+  })
+
+  it('should handle emoji as separators', () => {
+    const result = camelCase('hello👋world')
+    expect(result).toBe('helloWorld')
+  })
 })
