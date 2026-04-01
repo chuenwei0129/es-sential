@@ -321,3 +321,138 @@ permissions:
 **作者**: 初七
 **完成日期**: 2026-03-31
 **项目**: https://github.com/chuenwei0129/es-sential
+
+---
+
+## 🔄 P7 复盘补充（2026-04-01）
+
+> 本次复盘聚焦"发包流程验证完整性"，解决 prepublishOnly 钩子验证缺失问题。
+
+### 一、prepublishOnly 钩子强化
+
+**修复前**：
+```json
+"prepublishOnly": "pnpm build && publint"
+```
+
+**问题**：只构建了，没跑测试和类型检查，有 BUG 也能发包。
+
+**修复后**：
+```json
+"prepublishOnly": "pnpm lint && pnpm typecheck && pnpm test:ci && pnpm build && publint"
+```
+
+**5 阶段验证结果**：
+
+```
+✓ pnpm lint        - 24 文件检查通过
+✓ pnpm typecheck   - 无类型错误
+✓ pnpm test:ci     - 50 测试通过（新增 7 边界测试）
+✓ pnpm build       - ESM/CJS/类型/sourcemap 全生成
+✓ publint          - All good!
+```
+
+**学习时间**：Biome `files.ignore` 字段不存在，改用 `vcs.useIgnoreFile: true` 让 `.gitignore` 接管。
+
+### 二、边界条件修复记录
+
+| 函数 | 问题 | 修复方案 | 新增测试 |
+|:---|:---|:---|:---:|
+| `chunk` | `size=0` 死循环 | 加参数校验：`>0 && 整数 && 有限值` | 5 个 |
+| `kebabCase` | 零宽断言 `(?<=)` Safari<16 不兼容 | 改为捕获组 `$1-$2` | - |
+| `camelCase` | 仅支持 ASCII | 改为 Unicode 感知 `\p{L}\p{N}` | 2 个 |
+
+**边界测试新增**：
+```typescript
+// chunk 边界
+expect(() => chunk([1,2,3], 0)).toThrow()
+expect(() => chunk([1,2,3], -1)).toThrow()
+expect(() => chunk([1,2,3], 2.5)).toThrow()
+expect(() => chunk([1,2,3], NaN)).toThrow()
+expect(() => chunk([1,2,3], Infinity)).toThrow()
+
+// camelCase Unicode
+camelCase('こんにちは 世界') // 'こんにちは世界'
+camelCase('hello👋world')     // 'helloWorld'
+```
+
+### 三、pnpm pack 结构分析
+
+**Tarball 内容分类**：
+
+```
+📦 c6i-es-sential-0.1.0.tgz
+├── 📁 dist/
+│   ├── 📁 array/          # 子包：数组工具
+│   │   ├── index.js       # ESM
+│   │   ├── index.cjs      # CJS
+│   │   ├── index.d.ts     # ESM 类型
+│   │   ├── index.d.cts    # CJS 类型
+│   │   └── *.map          # sourcemap
+│   ├── 📁 object/         # 子包：对象工具
+│   ├── 📁 string/         # 子包：字符串工具
+│   ├── chunk-*.js         # ESM 共享代码
+│   ├── chunk-*.cjs        # CJS 共享代码
+│   ├── index.js           # 主入口 ESM
+│   ├── index.cjs          # 主入口 CJS
+│   └── *.d.ts / *.d.cts   # 类型声明
+├── 📄 package.json        # 包配置
+└── 📄 README.md           # 文档
+
+总计：24 个代码文件 + 24 个 sourcemap + 8 个类型文件
+```
+
+**关键发现**：
+- ESM 和 CJS 有独立的 chunk 文件（tsup splitting 行为）
+- 类型文件双重输出：`.d.ts` 对应 ESM，`.d.cts` 对应 CJS
+- sourcemap 每个文件都有，调试友好
+
+### 四、CI/CD Workflow 审查
+
+**当前配置亮点**：
+
+```yaml
+# 1. 并发控制 - 防止重复运行
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+# 2. 权限最小化 - 只给必要的写权限
+permissions:
+  contents: write      # 创建 Release
+  pull-requests: write # 创建版本 PR
+
+# 3. Changeset 自动化
+- name: Create Release Pull Request or Publish
+  uses: changesets/action@v1
+  with:
+    publish: pnpm run release      # 有变更集时发版
+    version: pnpm run version-packages  # 升级版本号
+```
+
+**尚待验证项**：
+- [ ] NPM_TOKEN 是否已配置（Settings → Secrets）
+- [ ] 仓库是否开启 "Allow GitHub Actions to create PRs"
+- [ ] 首次发布是否手动执行（scoped 包需 --access public）
+
+### 五、学习目标完成度更新
+
+| 目标 | 原评估 | 复盘后 | 差距 |
+|:---|:---:|:---:|:---|
+| npm 发包流程 | ⚠️ 部分 | ✅ 完成 | prepublishOnly 已闭环 |
+| 现代工程化 | ✅ 较好 | ✅ 完成 | 边界测试补全 |
+| 双格式输出 | ✅ 完成 | ✅ 完成 | pack 结构已分析 |
+| 分包导出 | ✅ 完成 | ✅ 完成 | exports 配置正确 |
+
+**总评**：从"能跑通"到"经得住审视"。
+
+### 六、下一步建议
+
+1. **真发一次包**：`npm publish --access public --dry-run` 验证全流程
+2. **加测试覆盖率**：`vitest --coverage` 看报告
+3. **类型导出验证**：`npx @arethetypeswrong/cli` 检查双格式类型
+4. **文档站点**：VitePress 或 Docusaurus 搭建 API 文档
+
+### 七、一句话总结
+
+> **教学项目的价值不在"完成了"，而在"每一步都知道为什么"。**
+
+prepublishOnly 的 5 阶段验证、边界条件的系统性修复、pack 内容的结构分析——这些才是真正的学习闭环。
