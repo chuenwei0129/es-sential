@@ -10,9 +10,7 @@
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist",
-    "LICENSE",
-    "README.md"
+    "dist"
   ],
   "exports": {
     ".": {
@@ -70,7 +68,7 @@
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "pnpm run build && changeset publish",
-    "prepublishOnly": "pnpm build && publint",
+    "prepublishOnly": "pnpm lint && pnpm typecheck && pnpm test:ci && pnpm build && publint",
     "prepare": "husky"
   },
   "lint-staged": {
