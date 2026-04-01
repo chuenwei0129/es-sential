@@ -19,7 +19,11 @@ coverage/
 .env.*.local
 
 # IDE / editor files
-.vscode/
+# VS Code - 保留共享配置，忽略个人配置
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/tasks.json
 .idea/
 *.swp
 *.swo
