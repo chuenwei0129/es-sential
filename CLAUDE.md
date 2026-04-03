@@ -14,7 +14,7 @@ You are operating within a constrained context window and strict system prompts.
     - Run `npx tsc --noEmit` (or the project's equivalent type-check)
     - Run `npx eslint . --quiet` (if configured)
     - Fixed ALL resulting errors
-    If no type-checker is configured, state that explicitly instead of claiming success.
+      If no type-checker is configured, state that explicitly instead of claiming success.
 
 ## Context Management
 
@@ -33,4 +33,4 @@ You are operating within a constrained context window and strict system prompts.
     - Dynamic imports and require() calls
     - Re-exports and barrel file entries
     - Test files and mocks
-    Do not assume a single grep caught everything.
+      Do not assume a single grep caught everything.

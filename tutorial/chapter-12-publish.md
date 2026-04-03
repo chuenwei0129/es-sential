@@ -8,6 +8,7 @@
 ## 一、本章目标
 
 学完本章，你将：
+
 - ✅ 完成 npm 包首次发布
 - ✅ 理解 prepublishOnly 完整验证流程
 - ✅ 学习包的后续迭代维护
@@ -39,6 +40,7 @@ pnpm exec publint
 ```
 
 **publint 会检查**：
+
 - ✅ package.json 配置正确
 - ✅ exports 配置有效
 - ✅ 入口文件存在
@@ -58,13 +60,13 @@ pnpm exec publint
 
 **5 阶段验证**：
 
-| 阶段 | 命令 | 检查内容 |
-|:---|:---|:---|
-| 1 | `pnpm lint` | 代码规范 |
-| 2 | `pnpm typecheck` | 类型正确性 |
-| 3 | `pnpm test:ci` | 所有测试通过 |
-| 4 | `pnpm build` | 构建产物生成 |
-| 5 | `publint` | 包结构正确 |
+| 阶段 | 命令             | 检查内容     |
+| :--- | :--------------- | :----------- |
+| 1    | `pnpm lint`      | 代码规范     |
+| 2    | `pnpm typecheck` | 类型正确性   |
+| 3    | `pnpm test:ci`   | 所有测试通过 |
+| 4    | `pnpm build`     | 构建产物生成 |
+| 5    | `publint`        | 包结构正确   |
 
 ---
 
@@ -233,6 +235,7 @@ npm ERR! 403 Forbidden
 ```
 
 **解决**：
+
 - 检查是否登录：`npm whoami`
 - 检查包名是否正确
 - scoped 包第一次发布需要 `--access public`
@@ -244,6 +247,7 @@ npm ERR! 403 You cannot publish over the previously published versions
 ```
 
 **解决**：
+
 - 升级版本号：`npx changeset version`
 - 或使用 `npm version patch/minor/major`
 
@@ -288,6 +292,7 @@ npm unpublish @yourname/my-package@0.1.0
 ```
 
 **注意**：
+
 - 超过 24 小时无法删除
 - 被大量使用的包无法删除
 - 删除后不能再发布相同版本
@@ -309,6 +314,7 @@ npm stats @yourname/my-package
 ### 6.2 回应 Issues
 
 在 GitHub 仓库开启 Issues，及时：
+
 - 修复 bug
 - 回答使用问题
 - 收集功能建议
@@ -325,20 +331,20 @@ npm stats @yourname/my-package
 
 请确认你已完成整个教程：
 
-| 章节 | 检查项 | 完成 |
-|:---|:---|:---:|
-| 第 1 章 | 安装 Node.js 和 pnpm | ☐ |
-| 第 2 章 | 配置 package.json | ☐ |
-| 第 3 章 | 配置 TypeScript | ☐ |
-| 第 4 章 | 配置 tsup 构建 | ☐ |
-| 第 5 章 | 配置 Vitest 测试 | ☐ |
-| 第 6 章 | 配置 Biome 规范 | ☐ |
-| 第 7 章 | 配置 Git Hooks | ☐ |
-| 第 8 章 | 配置 Changesets | ☐ |
-| 第 9 章 | 配置 CI/CD | ☐ |
-| 第 10 章 | 实现工具函数 | ☐ |
-| 第 11 章 | 编写进阶测试 | ☐ |
-| 第 12 章 | 发布到 npm | ☐ |
+| 章节     | 检查项               | 完成 |
+| :------- | :------------------- | :--: |
+| 第 1 章  | 安装 Node.js 和 pnpm |  ☐   |
+| 第 2 章  | 配置 package.json    |  ☐   |
+| 第 3 章  | 配置 TypeScript      |  ☐   |
+| 第 4 章  | 配置 tsup 构建       |  ☐   |
+| 第 5 章  | 配置 Vitest 测试     |  ☐   |
+| 第 6 章  | 配置 Biome 规范      |  ☐   |
+| 第 7 章  | 配置 Git Hooks       |  ☐   |
+| 第 8 章  | 配置 Changesets      |  ☐   |
+| 第 9 章  | 配置 CI/CD           |  ☐   |
+| 第 10 章 | 实现工具函数         |  ☐   |
+| 第 11 章 | 编写进阶测试         |  ☐   |
+| 第 12 章 | 发布到 npm           |  ☐   |
 
 **最终验证命令**：
 
@@ -360,16 +366,19 @@ pnpm exec publint   # 包结构检查
 完成本教程后，你已经掌握：
 
 ✅ **现代前端工程化完整流程**
+
 - TypeScript 类型系统
 - 零配置构建工具
 - 测试驱动开发
 
 ✅ **npm 包开发最佳实践**
+
 - ESM/CJS 双格式输出
 - 语义化版本管理
 - 自动化 CI/CD
 
 ✅ **可复用的实际经验**
+
 - 边界条件处理
 - 代码质量保证
 - 开源项目维护
@@ -393,4 +402,3 @@ pnpm exec publint   # 包结构检查
 - 分享你的学习经验
 
 **祝你开发愉快！🎉**
-

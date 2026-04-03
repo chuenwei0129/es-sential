@@ -8,6 +8,7 @@
 ## 一、本章目标
 
 学完本章，你将：
+
 - ✅ 使用 TDD 方法实现多个工具函数
 - ✅ 掌握 TypeScript 泛型和类型系统
 - ✅ 理解边界条件处理
@@ -19,14 +20,14 @@
 
 我们将实现以下工具函数：
 
-| 模块 | 函数 | 功能 |
-|:---|:---|:---|
-| **array** | `chunk` | 数组分块 |
-| | `uniq` | 数组去重 |
-| **object** | `pick` | 选取对象属性 |
-| | `omit` | 排除对象属性 |
-| **string** | `camelCase` | 转驼峰命名 |
-| | `kebabCase` | 转短横线命名 |
+| 模块       | 函数        | 功能         |
+| :--------- | :---------- | :----------- |
+| **array**  | `chunk`     | 数组分块     |
+|            | `uniq`      | 数组去重     |
+| **object** | `pick`      | 选取对象属性 |
+|            | `omit`      | 排除对象属性 |
+| **string** | `camelCase` | 转驼峰命名   |
+|            | `kebabCase` | 转短横线命名 |
 
 ---
 
@@ -47,7 +48,10 @@ describe('chunk', () => {
   })
 
   test('正好整除', () => {
-    expect(chunk([1, 2, 3, 4], 2)).toEqual([[1, 2], [3, 4]])
+    expect(chunk([1, 2, 3, 4], 2)).toEqual([
+      [1, 2],
+      [3, 4],
+    ])
   })
 
   test('空数组', () => {
@@ -164,6 +168,7 @@ export function uniq<T>(array: readonly T[]): T[] {
 ```
 
 **原理**：
+
 - `Set` 自动去重
 - `Array.from` 将 Set 转回数组
 
@@ -209,10 +214,7 @@ describe('pick', () => {
  * @param keys 要选取的属性键数组
  * @returns 包含指定属性的新对象
  */
-export function pick<T extends object, K extends keyof T>(
-  object: T,
-  keys: readonly K[]
-): Pick<T, K> {
+export function pick<T extends object, K extends keyof T>(object: T, keys: readonly K[]): Pick<T, K> {
   const result = {} as Pick<T, K>
   for (const key of keys) {
     result[key] = object[key]
@@ -222,6 +224,7 @@ export function pick<T extends object, K extends keyof T>(
 ```
 
 **类型技巧**：
+
 - `T extends object` 约束 T 是对象类型
 - `K extends keyof T` 约束 K 必须是 T 的键
 - `Pick<T, K>` TypeScript 内置工具类型
@@ -268,24 +271,19 @@ describe('omit', () => {
  * @param keys 要排除的属性键数组
  * @returns 不包含指定属性的新对象
  */
-export function omit<T extends Record<string, unknown>, K extends keyof T>(
-  object: T,
-  keys: readonly K[]
-): Omit<T, K> {
+export function omit<T extends Record<string, unknown>, K extends keyof T>(object: T, keys: readonly K[]): Omit<T, K> {
   const keySet = new Set<keyof T>(keys)
-  return Object.keys(object).reduce<Record<string, unknown>>(
-    (result, key) => {
-      if (!keySet.has(key)) {
-        result[key] = object[key]
-      }
-      return result
-    },
-    {}
-  ) as Omit<T, K>
+  return Object.keys(object).reduce<Record<string, unknown>>((result, key) => {
+    if (!keySet.has(key)) {
+      result[key] = object[key]
+    }
+    return result
+  }, {}) as Omit<T, K>
 }
 ```
 
 **优化点**：
+
 - 使用 `Set` 存储 keys，查找复杂度 O(1)
 - 比 `keys.includes(key)`（O(n)）更高效
 
@@ -358,7 +356,7 @@ export function camelCase(str: string): string {
     words[0].toLowerCase() +
     words
       .slice(1)
-      .map((word) => {
+      .map(word => {
         // 处理首字符（可能是 Unicode）
         const firstChar = String.fromCodePoint(word.codePointAt(0) ?? 0)
         const rest = word.slice(firstChar.length)
@@ -436,7 +434,7 @@ export function kebabCase(str: string): string {
       // 按非字母数字分割（ASCII 范围，与 camelCase 保持一致性）
       .split(/[^a-zA-Z0-9]+/g)
       .filter(Boolean)
-      .map((word) => word.toLowerCase())
+      .map(word => word.toLowerCase())
       .join('-')
   )
 }
@@ -447,7 +445,8 @@ export function kebabCase(str: string): string {
 > `camelCase` 需要正确处理 Unicode 以便将 `你好世界` 转为 `你好世界`。
 > `kebabCase` 主要处理代码命名（ASCII），且连字符分隔在中文场景意义不大。
 > 保持简单，使用 `/[^a-zA-Z0-9]+/g` 足够覆盖 99% 的使用场景。
-```
+
+````
 
 ---
 
@@ -472,7 +471,7 @@ export { kebabCase } from './kebabCase.js'
 export * from './array/index.js'
 export * from './object/index.js'
 export * from './string/index.js'
-```
+````
 
 ---
 
@@ -513,6 +512,7 @@ pnpm build
 [第 11 章：进阶测试](./chapter-11-test-adv.md)
 
 我们将：
+
 - 学习类型测试
 - 测试边界条件的更多技巧
 - 生成测试覆盖率报告
@@ -524,4 +524,3 @@ pnpm build
 - [TypeScript 泛型](https://www.typescriptlang.org/docs/handbook/2/generics.html)
 - [TypeScript 工具类型](https://www.typescriptlang.org/docs/handbook/utility-types.html)
 - [正则表达式 MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions)
-

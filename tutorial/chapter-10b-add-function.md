@@ -9,13 +9,13 @@
 
 当你想添加一个新函数（如 `debounce`），需要在 **5 个地方**进行修改：
 
-| 序号 | 文件 | 作用 | 必改？ |
-|:---:|:---|:---|:---:|
-| 1 | `src/function/debounce.ts` | 函数实现 | ✅ |
-| 2 | `src/function/debounce.test.ts` | 单元测试 | ✅ |
-| 3 | `src/function/index.ts` | 模块导出 | ✅ |
-| 4 | `tsup.config.ts` | 构建入口 | ✅ |
-| 5 | `package.json` exports | 子路径导出 | ✅ |
+| 序号 | 文件                            | 作用       | 必改？ |
+| :--: | :------------------------------ | :--------- | :----: |
+|  1   | `src/function/debounce.ts`      | 函数实现   |   ✅   |
+|  2   | `src/function/debounce.test.ts` | 单元测试   |   ✅   |
+|  3   | `src/function/index.ts`         | 模块导出   |   ✅   |
+|  4   | `tsup.config.ts`                | 构建入口   |   ✅   |
+|  5   | `package.json` exports          | 子路径导出 |   ✅   |
 
 ---
 
@@ -107,7 +107,7 @@ export { debounce } from './debounce.js'
 export * from './array/index.js'
 export * from './object/index.js'
 export * from './string/index.js'
-export * from './function/index.js'  // 新增
+export * from './function/index.js' // 新增
 ```
 
 ### 步骤 6：更新 tsup.config.ts
@@ -122,7 +122,7 @@ export default defineConfig({
     'array/index': 'src/array/index.ts',
     'object/index': 'src/object/index.ts',
     'string/index': 'src/string/index.ts',
-    'function/index': 'src/function/index.ts',  // 新增
+    'function/index': 'src/function/index.ts', // 新增
   },
   format: ['esm', 'cjs'],
   dts: true,
@@ -211,13 +211,13 @@ describe('{name}', () => {
 
 ### Q: 新函数应该放在哪个模块？
 
-| 函数类型 | 模块 | 示例 |
-|:---|:---|:---|
-| 数组操作 | `array/` | chunk, uniq, flatten |
-| 对象操作 | `object/` | pick, omit, merge |
-| 字符串操作 | `string/` | camelCase, kebabCase |
-| 函数工具 | `function/` | debounce, throttle, memoize |
-| 类型工具 | `type/` | isString, isArray |
+| 函数类型   | 模块        | 示例                        |
+| :--------- | :---------- | :-------------------------- |
+| 数组操作   | `array/`    | chunk, uniq, flatten        |
+| 对象操作   | `object/`   | pick, omit, merge           |
+| 字符串操作 | `string/`   | camelCase, kebabCase        |
+| 函数工具   | `function/` | debounce, throttle, memoize |
+| 类型工具   | `type/`     | isString, isArray           |
 
 ### Q: 如何快速创建新函数？
 
@@ -254,6 +254,7 @@ echo "3. Update package.json exports"
 ```
 
 使用：
+
 ```bash
 ./scripts/add-function.sh function debounce
 ```

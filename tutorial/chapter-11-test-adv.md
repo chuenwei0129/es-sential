@@ -8,6 +8,7 @@
 ## 一、本章目标
 
 学完本章，你将：
+
 - ✅ 掌握类型测试技巧
 - ✅ 深入理解边界条件测试
 - ✅ 生成和解读测试覆盖率报告
@@ -28,6 +29,7 @@ const result = pick({ a: 1, b: 2 }, ['a'])
 ```
 
 **类型测试验证**：
+
 - 返回值类型正确
 - 泛型推断符合预期
 - 类型约束有效
@@ -205,10 +207,7 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
       include: ['src/**/*.ts'],
-      exclude: [
-        'src/**/*.test.ts',
-        'src/**/*.type.test.ts',
-      ],
+      exclude: ['src/**/*.test.ts', 'src/**/*.type.test.ts'],
       thresholds: {
         lines: 80,
         functions: 80,
@@ -253,12 +252,12 @@ All files |   95.23 |    92.85 |     100 |   95.23 |
 
 **指标说明**：
 
-| 指标 | 含义 | 说明 |
-|:---|:---|:---|
-| % Stmts | 语句覆盖率 | 执行过的语句占比 |
+| 指标     | 含义       | 说明                       |
+| :------- | :--------- | :------------------------- |
+| % Stmts  | 语句覆盖率 | 执行过的语句占比           |
 | % Branch | 分支覆盖率 | if/else、switch 等分支覆盖 |
-| % Funcs | 函数覆盖率 | 调用过的函数占比 |
-| % Lines | 行覆盖率 | 执行过的代码行占比 |
+| % Funcs  | 函数覆盖率 | 调用过的函数占比           |
+| % Lines  | 行覆盖率   | 执行过的代码行占比         |
 
 **HTML 报告**：
 
@@ -333,18 +332,18 @@ test('size = 0 时抛出错误（边界防护）', () => {
 let counter = 0
 
 test('increment', () => {
-  counter++  // counter = 1
+  counter++ // counter = 1
   expect(counter).toBe(1)
 })
 
 test('increment again', () => {
-  counter++  // 依赖上一个测试，counter = 2
+  counter++ // 依赖上一个测试，counter = 2
   expect(counter).toBe(2)
 })
 
 // ✅ 好：每个测试独立
 beforeEach(() => {
-  counter = 0  // 每个测试前重置
+  counter = 0 // 每个测试前重置
 })
 
 test('increment', () => {
@@ -386,6 +385,7 @@ pnpm test:ci --coverage
 [第 12 章：发布与维护](./chapter-12-publish.md)
 
 我们将：
+
 - 执行完整的发布流程
 - 学习包的后续维护
 - 总结整个开发流程
@@ -397,4 +397,3 @@ pnpm test:ci --coverage
 - [Vitest 覆盖率文档](https://vitest.dev/guide/coverage.html)
 - [expect-type GitHub](https://github.com/mmkal/expect-type)
 - [测试金字塔](https://martinfowler.com/articles/practical-test-pyramid.html)
-

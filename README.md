@@ -25,7 +25,20 @@
 
 **es-sential**（essential：必要的）—— 名字的创意既表达了"这是必需的"，又巧妙嵌入了"ES"（代表 ECMAScript），一语双关。
 
-就像这个库里的工具函数都是 essential。
+es-sential 是一个高质量的实用函数库，包含现代 JavaScript 项目中常用的函数。
+
+我们专注于实现那些难以用 JavaScript 内置方法创建，但又经常需要且有用的函数。
+
+例如：delay, windowed, keyBy, mapValues, camelCase, 和 toSnakeCaseKeys。
+
+我们不实现那些可以轻松被现代 JavaScript 替代的函数，例如：
+
+isArray（改用 Array.isArray）
+isNaN（改用 Number.isNaN）
+isNumber（改用 typeof value === 'number'）
+min（改用 Math.min()）
+
+对于 TC39 提案中涵盖的函数，一旦进入 Stage 3，我们将不再实现。对于较早阶段的提案（Stage 2.7 或更低），如果确实有需要，我们可能会考虑添加，但一旦提案推进到 Stage 3 或更高阶段，我们会将其标记为弃用——因为届时使用原生实现是更好的选择。
 
 ## 特点
 
@@ -72,10 +85,10 @@ import { camelCase, kebabCase } from '@c6i/es-sential/string'
 
 当前支持的模块：
 
-| 模块 | 导入路径 | 功能 |
-|:---:|:---|:---|
-| **Array** | `@c6i/es-sential/array` | 数组工具函数：`chunk`, `uniq`... |
-| **Object** | `@c6i/es-sential/object` | 对象工具函数：`pick`, `omit`... |
+|    模块    | 导入路径                 | 功能                                        |
+| :--------: | :----------------------- | :------------------------------------------ |
+| **Array**  | `@c6i/es-sential/array`  | 数组工具函数：`chunk`, `uniq`...            |
+| **Object** | `@c6i/es-sential/object` | 对象工具函数：`pick`, `omit`...             |
 | **String** | `@c6i/es-sential/string` | 字符串工具函数：`camelCase`, `kebabCase`... |
 
 > 更多模块正在开发中...
@@ -92,21 +105,23 @@ import { camelCase, kebabCase } from '@c6i/es-sential/string'
 <summary><strong>Array 模块</strong></summary>
 
 #### `chunk<T>(array, size)`
+
 将数组分割成指定大小的块。
 
 ```typescript
 import { chunk } from '@c6i/es-sential/array'
 
-chunk([1, 2, 3, 4, 5], 2)  // [[1, 2], [3, 4], [5]]
+chunk([1, 2, 3, 4, 5], 2) // [[1, 2], [3, 4], [5]]
 ```
 
 #### `uniq<T>(array)`
+
 数组去重，保留首次出现的元素。
 
 ```typescript
 import { uniq } from '@c6i/es-sential/array'
 
-uniq([1, 2, 2, 3, 3, 4])   // [1, 2, 3, 4]
+uniq([1, 2, 2, 3, 3, 4]) // [1, 2, 3, 4]
 uniq(['a', 'b', 'b', 'a']) // ['a', 'b']
 ```
 
@@ -116,21 +131,23 @@ uniq(['a', 'b', 'b', 'a']) // ['a', 'b']
 <summary><strong>Object 模块</strong></summary>
 
 #### `pick(object, keys)`
+
 从对象中选取指定属性。
 
 ```typescript
 import { pick } from '@c6i/es-sential/object'
 
-pick({ a: 1, b: 2, c: 3 }, ['a', 'c'])  // { a: 1, c: 3 }
+pick({ a: 1, b: 2, c: 3 }, ['a', 'c']) // { a: 1, c: 3 }
 ```
 
 #### `omit(object, keys)`
+
 从对象中排除指定属性。
 
 ```typescript
 import { omit } from '@c6i/es-sential/object'
 
-omit({ a: 1, b: 2, c: 3 }, ['a', 'c'])  // { b: 2 }
+omit({ a: 1, b: 2, c: 3 }, ['a', 'c']) // { b: 2 }
 ```
 
 </details>
@@ -139,25 +156,27 @@ omit({ a: 1, b: 2, c: 3 }, ['a', 'c'])  // { b: 2 }
 <summary><strong>String 模块</strong></summary>
 
 #### `camelCase(str)`
+
 转换为驼峰命名（camelCase）。
 
 ```typescript
 import { camelCase } from '@c6i/es-sential/string'
 
-camelCase('hello world')      // 'helloWorld'
-camelCase('hello-world')      // 'helloWorld'
-camelCase('hello_world')      // 'helloWorld'
+camelCase('hello world') // 'helloWorld'
+camelCase('hello-world') // 'helloWorld'
+camelCase('hello_world') // 'helloWorld'
 ```
 
 #### `kebabCase(str)`
+
 转换为短横线命名（kebab-case）。
 
 ```typescript
 import { kebabCase } from '@c6i/es-sential/string'
 
-kebabCase('helloWorld')       // 'hello-world'
-kebabCase('HelloWorld')       // 'hello-world'
-kebabCase('hello_world')      // 'hello-world'
+kebabCase('helloWorld') // 'hello-world'
+kebabCase('HelloWorld') // 'hello-world'
+kebabCase('hello_world') // 'hello-world'
 ```
 
 </details>

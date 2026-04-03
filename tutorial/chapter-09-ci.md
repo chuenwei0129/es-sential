@@ -8,6 +8,7 @@
 ## 一、本章目标
 
 学完本章，你将：
+
 - ✅ 理解 CI/CD 的概念和价值
 - ✅ 配置 GitHub Actions 工作流
 - ✅ 实现 Pull Request 时自动测试
@@ -20,11 +21,13 @@
 ### 2.1 什么是 CI/CD？
 
 **CI（Continuous Integration）持续集成**：
+
 - 代码提交后自动运行测试
 - 确保新代码不会破坏现有功能
 - 及时发现问题，降低修复成本
 
 **CD（Continuous Deployment）持续部署**：
+
 - 测试通过后自动发布
 - 减少人工操作失误
 - 加快发布频率
@@ -60,32 +63,32 @@
 
 **核心概念**：
 
-| 概念 | 含义 | 类比 |
-|:---|:---|:---|
-| **Workflow** | 工作流，一个完整的自动化流程 | Jenkins Job |
-| **Job** | 任务，工作流中的一个执行单元 | Pipeline Stage |
-| **Step** | 步骤，任务中的一个执行步骤 | Shell Command |
-| **Action** | 预定义的可复用代码块 | Shared Library |
-| **Event** | 触发工作流的事件 | Webhook |
-| **Runner** | 执行工作流的虚拟机 | Build Agent |
+| 概念         | 含义                         | 类比           |
+| :----------- | :--------------------------- | :------------- |
+| **Workflow** | 工作流，一个完整的自动化流程 | Jenkins Job    |
+| **Job**      | 任务，工作流中的一个执行单元 | Pipeline Stage |
+| **Step**     | 步骤，任务中的一个执行步骤   | Shell Command  |
+| **Action**   | 预定义的可复用代码块         | Shared Library |
+| **Event**    | 触发工作流的事件             | Webhook        |
+| **Runner**   | 执行工作流的虚拟机           | Build Agent    |
 
 ### 2.3 GitHub Actions 文件结构
 
 ```yaml
 # .github/workflows/ci.yml
-name: CI  # 工作流名称
+name: CI # 工作流名称
 
-on:       # 触发条件
+on: # 触发条件
   push:
     branches: [main]
   pull_request:
     branches: [main]
 
-jobs:     # 任务定义
-  test:   # 任务名称
-    runs-on: ubuntu-latest  # 运行环境
-    steps:  # 执行步骤
-      - uses: actions/checkout@v4  # 检出代码
+jobs: # 任务定义
+  test: # 任务名称
+    runs-on: ubuntu-latest # 运行环境
+    steps: # 执行步骤
+      - uses: actions/checkout@v4 # 检出代码
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -174,9 +177,9 @@ jobs:
 ```yaml
 on:
   push:
-    branches: [main]      # main 分支的 push 触发
+    branches: [main] # main 分支的 push 触发
   pull_request:
-    branches: [main]      # 针对 main 分支的 PR 触发
+    branches: [main] # 针对 main 分支的 PR 触发
 ```
 
 **并发控制**：
@@ -355,11 +358,12 @@ changesets/action@v1
 
 ```yaml
 permissions:
-  contents: write       # 创建 Release、打 tag
-  pull-requests: write  # 创建版本升级 PR
+  contents: write # 创建 Release、打 tag
+  pull-requests: write # 创建版本升级 PR
 ```
 
 **为什么需要这些权限**：
+
 - `contents: write` - Changesets 需要创建 Git tag 和 Release
 - `pull-requests: write` - Changesets 需要创建版本升级 PR
 
@@ -400,6 +404,7 @@ permissions:
 ### Q3：发布报错 "Permission denied"
 
 检查：
+
 1. NPM_TOKEN 已正确设置
 2. Token 类型是 "Automation"
 3. 包名未被占用（npm 上检查）
@@ -516,6 +521,7 @@ git push origin main
 [第 10 章：编写功能](./chapter-10-code.md)
 
 我们将：
+
 - 实现更多工具函数
 - 应用 TDD 方法开发
 - 编写完整的单元测试
@@ -528,4 +534,3 @@ git push origin main
 - [Changesets Action](https://github.com/changesets/action)
 - [pnpm Action](https://github.com/pnpm/action-setup)
 - [GitHub Actions 工作流语法](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions)
-

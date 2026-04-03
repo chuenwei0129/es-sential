@@ -8,6 +8,7 @@
 ## 一、本章目标
 
 学完本章，你将：
+
 - ✅ 深入理解语义化版本（SemVer）
 - ✅ 掌握 Changesets 工作流
 - ✅ 配置自动化版本升级和 Changelog 生成
@@ -31,14 +32,14 @@
 
 **版本升级规则**：
 
-| 场景 | 当前版本 | 新版本 | 说明 |
-|:---|:---:|:---:|:---|
-| 修复 typo | 1.2.3 | `1.2.4` | PATCH 升级 |
-| 修复 bug | 1.2.3 | `1.2.4` | PATCH 升级 |
-| 新增函数 | 1.2.3 | `1.3.0` | MINOR 升级 |
-| 重写内部实现 | 1.2.3 | `1.3.0` | MINOR（API 不变） |
-| 删除/修改 API | 1.2.3 | `2.0.0` | MAJOR 升级 |
-| Node.js 最低版本变更 | 1.2.3 | `2.0.0` | MAJOR（破坏性变更） |
+| 场景                 | 当前版本 | 新版本  | 说明                |
+| :------------------- | :------: | :-----: | :------------------ |
+| 修复 typo            |  1.2.3   | `1.2.4` | PATCH 升级          |
+| 修复 bug             |  1.2.3   | `1.2.4` | PATCH 升级          |
+| 新增函数             |  1.2.3   | `1.3.0` | MINOR 升级          |
+| 重写内部实现         |  1.2.3   | `1.3.0` | MINOR（API 不变）   |
+| 删除/修改 API        |  1.2.3   | `2.0.0` | MAJOR 升级          |
+| Node.js 最低版本变更 |  1.2.3   | `2.0.0` | MAJOR（破坏性变更） |
 
 **0.x.x 的特殊含义**：
 
@@ -86,7 +87,7 @@ npm publish
 
 ```markdown
 ---
-"@yourname/my-package": patch
+'@yourname/my-package': patch
 ---
 
 修复 chunk 函数在 size=0 时的死循环问题
@@ -96,13 +97,14 @@ npm publish
 
 ```markdown
 ---
-"包名": 升级类型
+'包名': 升级类型
 ---
 
 变更描述（会写入 CHANGELOG.md）
 ```
 
 **升级类型**：
+
 - `patch` - 修复问题
 - `minor` - 新增功能
 - `major` - 破坏性变更
@@ -122,6 +124,7 @@ npx changeset init
 ```
 
 **初始化后会创建**：
+
 - `.changeset/` 目录
 - `.changeset/config.json` 配置文件
 - `.changeset/README.md` 说明文档
@@ -146,12 +149,12 @@ npx changeset init
 
 **配置说明**：
 
-| 配置项 | 含义 | 推荐值 |
-|:---|:---|:---|
-| `commit` | 是否自动 commit changeset | `false`（手动控制） |
-| `access` | 包访问权限 | `public` 或 `restricted` |
-| `baseBranch` | 主分支 | `main` |
-| `changelog` | Changelog 生成器 | 默认即可 |
+| 配置项       | 含义                      | 推荐值                   |
+| :----------- | :------------------------ | :----------------------- |
+| `commit`     | 是否自动 commit changeset | `false`（手动控制）      |
+| `access`     | 包访问权限                | `public` 或 `restricted` |
+| `baseBranch` | 主分支                    | `main`                   |
+| `changelog`  | Changelog 生成器          | 默认即可                 |
 
 ### 步骤 3：创建第一个 Changeset
 
@@ -172,7 +175,7 @@ npx changeset
 
 ```markdown
 ---
-"@yourname/my-package": patch
+'@yourname/my-package': patch
 ---
 
 修复 chunk 函数边界条件问题
@@ -200,6 +203,7 @@ npx changeset version
 ```
 
 这会：
+
 1. 读取所有未消费的 changeset
 2. 计算新版本号
 3. 更新 `package.json` 中的版本
@@ -282,9 +286,7 @@ npm publish --access public
 ```json
 // .changeset/config.json
 {
-  "linked": [
-    ["@scope/package-a", "@scope/package-b"]
-  ]
+  "linked": [["@scope/package-a", "@scope/package-b"]]
 }
 ```
 
@@ -294,9 +296,7 @@ npm publish --access public
 
 ```json
 {
-  "fixed": [
-    ["@scope/core", "@scope/utils"]
-  ]
+  "fixed": [["@scope/core", "@scope/utils"]]
 }
 ```
 
@@ -332,6 +332,7 @@ Changesets 根据 changeset 文件自动生成标准格式的 Changelog：
 ### Q1：changeset 文件命名规则
 
 文件名是随机的，如 `funny-apples-jump.md`，目的是：
+
 - 避免多人同时创建时冲突
 - 无需关心文件名具体内容
 
@@ -417,8 +418,8 @@ npx changeset version --snapshot
 [第 9 章：自动化 CI/CD](./chapter-09-ci.md)
 
 我们将：
-- 配置 GitHub Actions 自动化流水线
--实现代码提交时自动运行测试
+
+- 配置 GitHub Actions 自动化流水线 -实现代码提交时自动运行测试
 - 实现合并到 main 后自动发布
 
 ---
@@ -429,4 +430,3 @@ npx changeset version --snapshot
 - [语义化版本规范](https://semver.org/lang/zh-CN/)
 - [npm 发布指南](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry)
 - [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)
-

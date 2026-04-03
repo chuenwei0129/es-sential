@@ -8,6 +8,7 @@
 ## 🎯 学习目标
 
 完成本系列学习后，你将：
+
 - 理解现代 npm 包的完整开发流程
 - 掌握 TypeScript + 测试 + CI/CD 的工程化能力
 - 拥有自己发布的 npm 包
@@ -16,20 +17,20 @@
 
 ## 📚 学习路线（共 12 章）
 
-| 章节 | 主题 | 核心知识点 | ctx7 文档查询 |
-|:---:|:---|:---|:---|
-| [第 1 章](./chapter-01-env.md) | 环境准备 | Node.js、pnpm、版本管理 | pnpm |
-| [第 2 章](./chapter-02-init.md) | 初始化项目 | package.json、项目结构 | npm package.json |
-| [第 3 章](./chapter-03-ts.md) | TypeScript 配置 | tsconfig、类型系统 | TypeScript |
-| [第 4 章](./chapter-04-build.md) | 构建工具 | tsup、ESM/CJS、tree-shaking | tsup |
-| [第 5 章](./chapter-05-test.md) | 测试框架 | Vitest、TDD、单元测试 | Vitest |
-| [第 6 章](./chapter-06-lint.md) | 代码规范 | Biome、格式化、Lint | Biome |
-| [第 7 章](./chapter-07-git.md) | Git Hooks | husky、lint-staged | husky |
-| [第 8 章](./chapter-08-version.md) | 版本管理 | Changesets、语义化版本 | changesets |
-| [第 9 章](./chapter-09-ci.md) | 自动化 | GitHub Actions、CI/CD | GitHub Actions |
-| [第 10 章](./chapter-10-code.md) | 编写功能 | 工具函数实现 | - |
-| [第 11 章](./chapter-11-test-adv.md) | 进阶测试 | 边界条件、类型测试 | - |
-| [第 12 章](./chapter-12-publish.md) | 发布与维护 | npm publish、后续迭代 | npm |
+|                 章节                 | 主题            | 核心知识点                  | ctx7 文档查询    |
+| :----------------------------------: | :-------------- | :-------------------------- | :--------------- |
+|    [第 1 章](./chapter-01-env.md)    | 环境准备        | Node.js、pnpm、版本管理     | pnpm             |
+|   [第 2 章](./chapter-02-init.md)    | 初始化项目      | package.json、项目结构      | npm package.json |
+|    [第 3 章](./chapter-03-ts.md)     | TypeScript 配置 | tsconfig、类型系统          | TypeScript       |
+|   [第 4 章](./chapter-04-build.md)   | 构建工具        | tsup、ESM/CJS、tree-shaking | tsup             |
+|   [第 5 章](./chapter-05-test.md)    | 测试框架        | Vitest、TDD、单元测试       | Vitest           |
+|   [第 6 章](./chapter-06-lint.md)    | 代码规范        | Biome、格式化、Lint         | Biome            |
+|    [第 7 章](./chapter-07-git.md)    | Git Hooks       | husky、lint-staged          | husky            |
+|  [第 8 章](./chapter-08-version.md)  | 版本管理        | Changesets、语义化版本      | changesets       |
+|    [第 9 章](./chapter-09-ci.md)     | 自动化          | GitHub Actions、CI/CD       | GitHub Actions   |
+|   [第 10 章](./chapter-10-code.md)   | 编写功能        | 工具函数实现                | -                |
+| [第 11 章](./chapter-11-test-adv.md) | 进阶测试        | 边界条件、类型测试          | -                |
+| [第 12 章](./chapter-12-publish.md)  | 发布与维护      | npm publish、后续迭代       | npm              |
 
 ---
 
@@ -38,6 +39,7 @@
 ### 每章的结构
 
 每章都包含以下部分：
+
 1. **本章目标** - 学完能做什么
 2. **概念讲解** - 用 ctx7 查权威文档
 3. **动手实践** - 一步步跟着做
@@ -56,12 +58,14 @@
 ### 前置知识
 
 开始前你需要：
+
 - 基本的 JavaScript 知识
 - 会用命令行（终端）
 - 有 GitHub 账号
 - 安装了 VS Code
 
 不需要：
+
 - TypeScript 经验（我们会讲）
 - 测试经验（从零开始）
 - CI/CD 经验（从概念讲起）
@@ -105,14 +109,14 @@ my-npm-package/
 
 **你将掌握的技能**：
 
-| 技能 | 掌握程度 |
-|:---|:---:|
-| TypeScript 类型系统 | ⭐⭐⭐⭐⭐ |
-| 构建工具 (tsup) | ⭐⭐⭐⭐⭐ |
-| 测试框架 (Vitest) | ⭐⭐⭐⭐⭐ |
-| 代码规范 (Biome) | ⭐⭐⭐⭐⭐ |
+| 技能                   |  掌握程度  |
+| :--------------------- | :--------: |
+| TypeScript 类型系统    | ⭐⭐⭐⭐⭐ |
+| 构建工具 (tsup)        | ⭐⭐⭐⭐⭐ |
+| 测试框架 (Vitest)      | ⭐⭐⭐⭐⭐ |
+| 代码规范 (Biome)       | ⭐⭐⭐⭐⭐ |
 | CI/CD (GitHub Actions) | ⭐⭐⭐⭐⭐ |
-| 版本管理 (Changesets) | ⭐⭐⭐⭐⭐ |
+| 版本管理 (Changesets)  | ⭐⭐⭐⭐⭐ |
 
 ---
 
