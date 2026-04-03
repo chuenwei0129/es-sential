@@ -14,8 +14,8 @@
 
 <p align="center">
 <a href="#快速开始">快速开始</a> •
-<a href="#模块">模块</a> •
-<a href="#文档">文档</a> •
+<a href="#api-文档">API 文档</a> •
+<a href="#开发路线图">开发路线图</a> •
 <a href="#贡献">贡献</a>
 </p>
 
@@ -29,16 +29,14 @@ es-sential 是一个高质量的实用函数库，包含现代 JavaScript 项目
 
 我们专注于实现那些难以用 JavaScript 内置方法创建，但又经常需要且有用的函数。
 
-例如：delay, windowed, keyBy, mapValues, camelCase, 和 toSnakeCaseKeys。
-
 我们不实现那些可以轻松被现代 JavaScript 替代的函数，例如：
 
-isArray（改用 Array.isArray）
-isNaN（改用 Number.isNaN）
-isNumber（改用 typeof value === 'number'）
-min（改用 Math.min()）
+- `isArray`（改用 `Array.isArray`）
+- `isNaN`（改用 `Number.isNaN`）
+- `isNumber`（改用 `typeof value === 'number'`）
+- `min`（改用 `Math.min()`）
 
-对于 TC39 提案中涵盖的函数，一旦进入 Stage 3，我们将不再实现。对于较早阶段的提案（Stage 2.7 或更低），如果确实有需要，我们可能会考虑添加，但一旦提案推进到 Stage 3 或更高阶段，我们会将其标记为弃用——因为届时使用原生实现是更好的选择。
+对于 TC39 提案中涵盖的函数，一旦进入 Stage 3，我们将不再实现。
 
 ## 特点
 
@@ -62,133 +60,110 @@ yarn add @c6i/es-sential
 
 ### 使用方式
 
-#### 全量导入
-
 ```typescript
-import { chunk, uniq, pick, omit, camelCase, kebabCase } from '@c6i/es-sential'
+import { noop, isSameValueZero } from '@c6i/es-sential'
+
+// 空操作函数 - 作为默认回调
+function fetchData(onSuccess = noop, onError = noop) {
+  fetch('/api/data')
+    .then(data => onSuccess(data))
+    .catch(err => onError(err))
+}
+
+// SameValueZero 比较 - 与 Map/Set 内部逻辑一致
+isSameValueZero(NaN, NaN) // true
+isSameValueZero(-0, +0) // true
+isSameValueZero(1, 1) // true
 ```
 
-#### 按需导入（推荐）
+## API 文档
+
+### `noop()`
+
+空操作函数，执行时什么也不做。
+
+**适用场景：**
+
+- 作为默认回调函数，避免调用时需要反复检查 `if (callback)`
+- 作为可选参数的默认值，简化调用方代码
+- 在测试中作为桩（stub）函数
+- 在高阶函数中作为占位符
 
 ```typescript
-// 数组工具
-import { chunk, uniq } from '@c6i/es-sential/array'
+import { noop } from '@c6i/es-sential'
 
-// 对象工具
-import { pick, omit } from '@c6i/es-sential/object'
+// 作为默认回调参数
+function startAnimation(onFrame = noop) {
+  let progress = 0
+  requestAnimationFrame(function tick() {
+    progress += 0.1
+    onFrame(progress) // 始终安全，无需检查 undefined
+    if (progress < 1) requestAnimationFrame(tick)
+  })
+}
 
-// 字符串工具
-import { camelCase, kebabCase } from '@c6i/es-sential/string'
+// 在数组迭代中临时忽略某些元素
+const arr = [1, 2, 3]
+arr.forEach(noop) // 什么都不做，只是遍历
 ```
 
-## 模块
+### `isSameValueZero(value, other)`
 
-当前支持的模块：
+比较两个值是否相等，使用 **SameValueZero** 算法。
 
-|    模块    | 导入路径                 | 功能                                        |
-| :--------: | :----------------------- | :------------------------------------------ |
-| **Array**  | `@c6i/es-sential/array`  | 数组工具函数：`chunk`, `uniq`...            |
-| **Object** | `@c6i/es-sential/object` | 对象工具函数：`pick`, `omit`...             |
-| **String** | `@c6i/es-sential/string` | 字符串工具函数：`camelCase`, `kebabCase`... |
+该算法是 JavaScript 中 `Map` 的键比较、`Set` 的值去重所采用的内部相等性判断规则。
 
-> 更多模块正在开发中...
+| 比较          | `===`   | `Object.is` | `isSameValueZero` |
+| ------------- | ------- | ----------- | ----------------- |
+| `NaN === NaN` | `false` | `true`      | `true`            |
+| `-0 === +0`   | `true`  | `false`     | `true`            |
+| 其他          | 一致    | 一致        | 一致              |
 
-## 文档
+**参数：**
 
-### 在线文档
+- `value` - 待比较的第一个值
+- `other` - 待比较的第二个值
 
-🌐 **完整文档和 API 参考**: [https://es-sential.c6i.com](https://es-sential.c6i.com)（即将上线）
-
-### 快速参考
-
-<details>
-<summary><strong>Array 模块</strong></summary>
-
-#### `chunk<T>(array, size)`
-
-将数组分割成指定大小的块。
+**返回：** 若两个值满足 SameValueZero 相等则返回 `true`，否则返回 `false`
 
 ```typescript
-import { chunk } from '@c6i/es-sential/array'
+import { isSameValueZero } from '@c6i/es-sential'
 
-chunk([1, 2, 3, 4, 5], 2) // [[1, 2], [3, 4], [5]]
+// 基本类型比较
+isSameValueZero(1, 1) // true
+isSameValueZero('a', 'a') // true
+
+// NaN 比较（SameValueZero 认为 NaN 等于 NaN）
+isSameValueZero(NaN, NaN) // true
+
+// 零值比较（SameValueZero 认为 -0 和 +0 相等）
+isSameValueZero(-0, +0) // true
+
+// 对象比较（引用不同则不等）
+isSameValueZero({}, {}) // false
+
+// 模拟 Map 键比较
+const map = new Map()
+map.set(-0, 'minus')
+map.set(+0, 'plus')
+map.size // 1，键被覆盖
+isSameValueZero(-0, +0) // true，与 Map 内部逻辑一致
 ```
-
-#### `uniq<T>(array)`
-
-数组去重，保留首次出现的元素。
-
-```typescript
-import { uniq } from '@c6i/es-sential/array'
-
-uniq([1, 2, 2, 3, 3, 4]) // [1, 2, 3, 4]
-uniq(['a', 'b', 'b', 'a']) // ['a', 'b']
-```
-
-</details>
-
-<details>
-<summary><strong>Object 模块</strong></summary>
-
-#### `pick(object, keys)`
-
-从对象中选取指定属性。
-
-```typescript
-import { pick } from '@c6i/es-sential/object'
-
-pick({ a: 1, b: 2, c: 3 }, ['a', 'c']) // { a: 1, c: 3 }
-```
-
-#### `omit(object, keys)`
-
-从对象中排除指定属性。
-
-```typescript
-import { omit } from '@c6i/es-sential/object'
-
-omit({ a: 1, b: 2, c: 3 }, ['a', 'c']) // { b: 2 }
-```
-
-</details>
-
-<details>
-<summary><strong>String 模块</strong></summary>
-
-#### `camelCase(str)`
-
-转换为驼峰命名（camelCase）。
-
-```typescript
-import { camelCase } from '@c6i/es-sential/string'
-
-camelCase('hello world') // 'helloWorld'
-camelCase('hello-world') // 'helloWorld'
-camelCase('hello_world') // 'helloWorld'
-```
-
-#### `kebabCase(str)`
-
-转换为短横线命名（kebab-case）。
-
-```typescript
-import { kebabCase } from '@c6i/es-sential/string'
-
-kebabCase('helloWorld') // 'hello-world'
-kebabCase('HelloWorld') // 'hello-world'
-kebabCase('hello_world') // 'hello-world'
-```
-
-</details>
 
 ## 开发路线图
 
-- [x] 核心工具模块（Array, Object, String）
+**已发布：**
+
+- [x] `noop` - 空操作函数
+- [x] `isSameValueZero` - SameValueZero 相等性比较
+
+**规划中：**
+
+- [ ] Array 工具模块（`chunk`, `uniq`...）
+- [ ] Object 工具模块（`pick`, `omit`...）
+- [ ] String 工具模块（`camelCase`, `kebabCase`...）
 - [ ] Function 工具模块（`debounce`, `throttle`...）
 - [ ] Math 工具模块（`clamp`, `random`...）
-- [ ] 日期/时间处理模块
-- [ ] 数据处理/验证模块
-- [ ] 官方文档站点
 
 ## 贡献
 
@@ -208,6 +183,9 @@ pnpm run build
 
 # 代码检查
 pnpm run lint
+
+# 类型检查
+pnpm run typecheck
 ```
 
 ### 项目结构
@@ -215,16 +193,17 @@ pnpm run lint
 ```
 es-sential/
 ├── src/
-│   ├── array/         # 数组工具
-│   ├── object/        # 对象工具
-│   ├── string/        # 字符串工具
+│   ├── function/      # 函数工具（noop）
+│   ├── utils/         # 通用工具（isSameValueZero）
+│   ├── array/         # 数组工具（待开发）
+│   ├── object/        # 对象工具（待开发）
+│   ├── string/        # 字符串工具（待开发）
 │   └── index.ts       # 主入口
-├── docs/              # 文档站点（即将添加）
-├── tests/             # 测试文件
-└── build/             # 构建配置
+├── notes/             # 开发笔记
+└── dist/              # 构建输出
 ```
 
-查看 [NOTES.md](./NOTES.md) 了解开发过程中的学习心得。
+查看 [notes/README.md](./notes/README.md) 了解开发过程中的学习心得。
 
 ## 许可证
 
