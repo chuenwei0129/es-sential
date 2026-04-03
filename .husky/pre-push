@@ -1,0 +1,10 @@
+#!/bin/sh
+# pre-push 钩子：推送前确保类型和测试通过
+
+set -e
+
+echo "🔍 pre-push: 类型检查 + 测试..."
+
+pnpm typecheck && pnpm test
+
+echo "✅ pre-push 通过"

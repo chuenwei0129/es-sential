@@ -1,0 +1,34 @@
+#!/bin/sh
+# commit-msg 钩子：检查提交信息格式
+
+COMMIT_MSG_FILE=$1
+COMMIT_MSG=$(head -n1 "$COMMIT_MSG_FILE")
+
+# Conventional Commits 正则
+PATTERN="^(feat|fix|docs|style|refactor|test|chore|ci|build)(\(.+\))?: .+"
+
+if ! echo "$COMMIT_MSG" | grep -qE "$PATTERN"; then
+  echo "❌ 提交信息格式错误！"
+  echo ""
+  echo "请使用 Conventional Commits 格式："
+  echo "  <type>(<scope>): <description>"
+  echo ""
+  echo "类型："
+  echo "  feat     新功能"
+  echo "  fix      修复"
+  echo "  docs     文档"
+  echo "  style    格式（不影响代码运行的变动）"
+  echo "  refactor 重构"
+  echo "  test     测试"
+  echo "  chore    构建/工具/依赖"
+  echo "  ci       CI配置"
+  echo "  build    构建"
+  echo ""
+  echo "示例："
+  echo '  feat: 新增 delay 函数'
+  echo '  fix(utils): 修复边界情况'
+  echo '  docs: 更新 README'
+  exit 1
+fi
+
+echo "✅ 提交信息格式正确"
