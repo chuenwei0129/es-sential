@@ -42,13 +42,14 @@ export default config
 
 ESLint 9.x 引入全新配置格式，和旧版 `.eslintrc.json` 完全不兼容。
 
-### eslint.config.mjs
+### eslint.config.mjs（简化示例）
 
 ```javascript
 import pluginJs from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import globals from 'globals'
 import eslintConfigPrettier from 'eslint-config-prettier'
+import vitest from '@vitest/eslint-plugin'
 
 export default [
   // 1. 忽略配置
@@ -63,19 +64,43 @@ export default [
     },
   },
 
-  // 3. 规则配置
+  // 3. 基础规则
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
 
-  // 4. 自定义规则
+  // 4. 源码规则
   {
+    files: ['src/**/*.ts'],
+    ignores: ['**/*.test.ts'],
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        project: './tsconfig.json',
+      },
+    },
     rules: {
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/no-unused-vars': 'error',
+      // 禁止 console.log
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'CallExpression[callee.object.name="console"]',
+          message: 'console.log() is not allowed in source code.',
+        },
+      ],
     },
   },
 
-  // 5. Prettier 兼容（必须放最后）
+  // 5. 测试文件规则
+  {
+    files: ['**/*.test.ts'],
+    plugins: { vitest },
+    rules: {
+      ...vitest.configs.recommended.rules,
+      'no-restricted-syntax': 'off', // 测试允许 console
+    },
+  },
+
+  // 6. Prettier 兼容（必须放最后）
   eslintConfigPrettier,
 ]
 ```

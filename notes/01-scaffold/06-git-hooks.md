@@ -21,18 +21,42 @@ npx husky init  # 创建 .husky/ 目录和配置
 
 ### pre-commit Hook
 
-`.husky/pre-commit`：提交前执行
+`.husky/pre-commit`：提交前自动修复格式
 
 ```bash
-pnpm lint-staged
+#!/bin/sh
+set -e
+
+echo "🎨 pre-commit: 代码格式化和规范检查..."
+
+npx lint-staged
+
+echo "✅ pre-commit 通过"
 ```
 
-### pre-push Hook（可选）
+### commit-msg Hook
 
-`.husky/pre-push`：推送前执行
+`.husky/commit-msg`：检查提交信息格式
 
 ```bash
+#!/bin/sh
+# 验证 Conventional Commits 格式
+# 如: feat: 新增功能, fix: 修复问题
+```
+
+### pre-push Hook
+
+`.husky/pre-push`：推送前类型检查和测试
+
+```bash
+#!/bin/sh
+set -e
+
+echo "🔍 pre-push: 类型检查 + 测试..."
+
 pnpm typecheck && pnpm test
+
+echo "✅ pre-push 通过"
 ```
 
 ## lint-staged 配置
@@ -43,32 +67,19 @@ pnpm typecheck && pnpm test
 
 ```javascript
 export default {
-  // JS/MJS 文件：先 eslint fix，再 prettier
-  '*.{js,mjs}': ['eslint --fix', 'prettier --write'],
+  // JS/TS 文件：ESLint 自动修复 + Prettier 格式化
+  '*.{js,ts,tsx}': ['eslint --fix', 'prettier --write'],
 
-  // TS 文件：先类型检查，再 eslint，再 prettier
-  '*.ts': [() => 'tsc --noEmit', 'eslint --fix', 'prettier --write'],
-
-  // JSON/Markdown：只 prettier
-  '*.{json,md}': ['prettier --write'],
+  // 其他文件：Prettier 格式化
+  '*.{json,md,yml,yaml,css,html}': 'prettier --write',
 }
 ```
 
-**TS 文件的特殊处理**：
+**注意**：TypeScript 类型检查（`tsc --noEmit`）**不放在 lint-staged**，因为：
 
-```js
-'*.ts': [
-  () => 'tsc --noEmit',  // 箭头函数返回命令字符串
-  'eslint --fix',
-  'prettier --write',
-]
-```
-
-为什么用 `() => 'tsc --noEmit'`？
-
-- lint-staged 默认会给命令传文件名参数
-- tsc 不需要文件名（它自己读 tsconfig.include）
-- 用箭头函数返回字符串，lint-staged 就不会追加文件名
+- 类型检查需要全项目上下文
+- lint-staged 是单文件处理
+- 放 `pre-push` 中更合适
 
 ## 完整检查流程
 
@@ -80,13 +91,20 @@ git commit -m "xxx"
 ├─→ .husky/pre-commit 触发
 │     ↓
 │   lint-staged 运行
-│     ├─ 检查所有 staged .ts 文件
-│     ├─ tsc --noEmit（类型检查）
+│     ├─ 检查所有 staged 文件
 │     ├─ eslint --fix（自动修复问题）
 │     └─ prettier --write（格式化）
 │     ↓
 │   全部通过 → commit 成功
 │   任一失败 → commit 中断，需修复后重试
+   ↓
+git push
+   ↓
+└─→ .husky/pre-push 触发
+      ↓
+    pnpm typecheck && pnpm test
+      ↓
+    通过 → push 成功
 ```
 
 ## 学到的点
@@ -101,10 +119,11 @@ git commit -m "xxx" --no-verify  # 跳过 pre-commit
 
 ### 配置对比总结
 
-| 文件                | 触发时机     | 执行内容                |
-| :------------------ | :----------- | :---------------------- |
-| `.husky/pre-commit` | `git commit` | lint-staged（快速检查） |
-| `.husky/pre-push`   | `git push`   | 完整检查（类型 + 测试） |
+| 文件                | 触发时机     | 执行内容              |
+| :------------------ | :----------- | :-------------------- |
+| `.husky/pre-commit` | `git commit` | lint-staged（格式化） |
+| `.husky/commit-msg` | `git commit` | 提交信息格式检查      |
+| `.husky/pre-push`   | `git push`   | 类型检查 + 测试       |
 
 为什么分开？
 

@@ -80,7 +80,7 @@ export default [
   // ==========================================================
   {
     files: ['src/**/*.ts'], // 只对 src 目录生效
-    ignores: ['**/*.spec.ts'], // 忽略测试文件
+    ignores: ['**/*.test.ts'], // 忽略测试文件
     languageOptions: {
       parser: tseslint.parser, // 使用 TypeScript 解析器
       parserOptions: {
@@ -108,10 +108,10 @@ export default [
   },
 
   // ==========================================================
-  // 6. 测试文件专用规则 (*.spec.ts)
+  // 6. 测试文件专用规则 (*.test.ts)
   // ==========================================================
   {
-    files: ['**/*.spec.ts'],
+    files: ['**/*.test.ts'],
     plugins: { vitest }, // 启用 Vitest 插件
     settings: { vitest: { typecheck: true } }, // 启用类型检查
     languageOptions: {

@@ -22,10 +22,11 @@ export default defineConfig({
     globals: true, // 启用全局 API (describe, it, expect)
     environment: 'node', // 运行环境
     include: ['src/**/*.test.ts'], // 测试文件匹配
-    exclude: ['node_modules', 'dist'], // 排除目录
     coverage: {
       provider: 'v8', // 覆盖率工具
-      reporter: ['text', 'json', 'html'], // 输出格式
+      reporter: ['text', 'html'], // 输出格式
+      include: ['src/**/*.ts'], // 覆盖率统计范围
+      exclude: ['src/**/*.test.ts'], // 排除测试文件
     },
   },
 })
@@ -48,9 +49,8 @@ export default defineConfig({
 **Step 1: Red** — 写测试（测试失败）
 
 ```typescript
-// noop.test.ts
-import { noop } from './noop'
 import { describe, it, expect } from 'vitest'
+import { noop } from './noop'
 
 describe('noop', () => {
   it('should be a function', () => {
@@ -118,10 +118,10 @@ await expect(promise).rejects.toThrow()
 两种风格：
 
 ```
-# 风格1: 同目录
+# 风格1: 同目录（本项目使用）
 src/
 ├── utils.ts
-└── utils.test.ts      # 测试放一起
+└── utils.spec.ts      # 测试文件放一起
 
 # 风格2: 独立目录
 src/
