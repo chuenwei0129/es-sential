@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "module": "ESNext",
+
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "Bundler",
+
+    "strict": true,
+
+    "verbatimModuleSyntax": true,
+
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+
+    "forceConsistentCasingInFileNames": true,
+
+    "types": ["vitest/globals"]
+  },
+  "include": ["src/**/*"]
+}

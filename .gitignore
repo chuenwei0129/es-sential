@@ -1,0 +1,26 @@
+# 依赖目录
+node_modules/
+
+# 构建产物
+dist/
+
+# 日志
+*.log
+
+# 编辑器
+.vscode/
+.idea/
+# 这是 Vim 编辑器 的交换文件（swap file）
+*.swp
+
+# 操作系统
+.DS_Store
+# 这是 Windows 系统 的缩略图缓存文件
+Thumbs.db
+
+# 测试覆盖率
+coverage/
+
+# 本地环境变量
+.env
+.env.local

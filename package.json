@@ -1,0 +1,63 @@
+{
+  "name": "@c6i/es-sential",
+  "version": "0.0.1",
+  "description": "es-sential 是一个高质量的实用函数库，包含现代 JavaScript 项目中常用的函数。",
+  "keywords": [],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "pnpm typecheck && pnpm format:check && pnpm lint && pnpm test",
+    "prepublishOnly": "pnpm clean && pnpm build",
+    "prepare": "husky"
+  },
+  "author": {
+    "name": "c6i",
+    "email": "chuenwei0129@gmail.com"
+  },
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chuenwei0129/es-sential"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "^9.23.0",
+    "@vitest/coverage-v8": "^4.1.2",
+    "@vitest/eslint-plugin": "^1.1.38",
+    "eslint": "^9.23.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^16.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.5.3",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.29.0",
+    "vitest": "^4.1.2"
+  },
+  "packageManager": "pnpm@10.33.0"
+}

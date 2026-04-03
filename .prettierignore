@@ -1,0 +1,33 @@
+# 构建输出
+dist
+coverage
+.tsup
+
+# 依赖
+node_modules
+.pnp
+.pnp.js
+
+# 锁文件（由包管理器维护）
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# 日志
+*.log
+logs
+
+# 生成的声明文件
+*.d.ts
+
+# 归档文件
+*.tgz
+
+# Yarn
+.yarn
+
+# 测试报告
+coverage
+
+# 缓存
+.cache
