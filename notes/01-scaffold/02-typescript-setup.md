@@ -33,19 +33,19 @@
 
 ### 目标与模块
 
-| 配置 | 选择 | 理由 |
-|:---|:---|:---|
-| `target: "ES2022"` | ES2022 | 现代 Node.js 版本都支持 |
-| `module: "ES2022"` | ESM | 标准模块系统，支持 tree-shaking |
+| 配置                          | 选择         | 理由                              |
+| :---------------------------- | :----------- | :-------------------------------- |
+| `target: "ES2022"`            | ES2022       | 现代 Node.js 版本都支持           |
+| `module: "ES2022"`            | ESM          | 标准模块系统，支持 tree-shaking   |
 | `moduleResolution: "bundler"` | bundler 模式 | 支持 `import './file'` 不带扩展名 |
 
 ### 输出配置
 
-| 配置 | 作用 |
-|:---|:---|
-| `declaration: true` | 生成 `.d.ts` 类型声明文件 |
-| `sourceMap: true` | 生成 source map，调试时用 |
-| `outDir` / `rootDir` | 输入输出目录隔离 |
+| 配置                 | 作用                      |
+| :------------------- | :------------------------ |
+| `declaration: true`  | 生成 `.d.ts` 类型声明文件 |
+| `sourceMap: true`    | 生成 source map，调试时用 |
+| `outDir` / `rootDir` | 输入输出目录隔离          |
 
 ### 严格模式
 
@@ -54,6 +54,7 @@
 ```
 
 包含的子选项：
+
 - `noImplicitAny` — 禁止隐式 any
 - `strictNullChecks` — 严格的 null 检查
 - `strictFunctionTypes` — 函数参数双向协变检查
@@ -80,20 +81,21 @@
 
 ```ts
 // 可以使用这些写法
-import { foo } from './utils'      // ✅ 不带扩展名
-import { bar } from './utils.js'   // ✅ 带 .js（实际指向 .ts）
+import { foo } from './utils' // ✅ 不带扩展名
+import { bar } from './utils.js' // ✅ 带 .js（实际指向 .ts）
 ```
 
 ### 3. include / exclude
 
 ```json
 {
-  "include": ["src/**/*"],       // 只编译 src 目录
-  "exclude": ["**/*.test.ts"]    // 排除测试文件
+  "include": ["src/**/*"], // 只编译 src 目录
+  "exclude": ["**/*.test.ts"] // 排除测试文件
 }
 ```
 
 **匹配规则**：
+
 - `*` 匹配任意字符（不含 /）
 - `**/` 匹配任意层级目录
 

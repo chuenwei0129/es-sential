@@ -2,13 +2,13 @@
 
 ## 为什么选 Vitest？
 
-| 特性 | Vitest | Jest |
-|:---|:---|:---|
-| ESM 支持 | 原生支持 | 需要配置 transform |
-| TypeScript | 原生支持 | 需要 ts-jest |
-| 配置复杂度 | 接近零配置 | 需要较多配置 |
-| 与 esbuild 集成 | 内置 | 需额外配置 |
-| 迁移成本 | 从 Jest 迁移容易 | 基准 |
+| 特性            | Vitest           | Jest               |
+| :-------------- | :--------------- | :----------------- |
+| ESM 支持        | 原生支持         | 需要配置 transform |
+| TypeScript      | 原生支持         | 需要 ts-jest       |
+| 配置复杂度      | 接近零配置       | 需要较多配置       |
+| 与 esbuild 集成 | 内置             | 需额外配置         |
+| 迁移成本        | 从 Jest 迁移容易 | 基准               |
 
 **Vitest 的定位**：专为现代 Vite 生态设计的测试框架，但 standalone 使用也完全 OK。
 
@@ -19,13 +19,13 @@ import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
-    globals: true,              // 启用全局 API (describe, it, expect)
-    environment: 'node',        // 运行环境
-    include: ['src/**/*.test.ts'],  // 测试文件匹配
+    globals: true, // 启用全局 API (describe, it, expect)
+    environment: 'node', // 运行环境
+    include: ['src/**/*.test.ts'], // 测试文件匹配
     exclude: ['node_modules', 'dist'], // 排除目录
     coverage: {
-      provider: 'v8',           // 覆盖率工具
-      reporter: ['text', 'json', 'html'],  // 输出格式
+      provider: 'v8', // 覆盖率工具
+      reporter: ['text', 'json', 'html'], // 输出格式
     },
   },
 })
@@ -82,8 +82,8 @@ noop 没什么好重构的，更复杂的函数可以优化实现。
 
 ```typescript
 // 基本断言
-expect(value).toBe(expected)      // 严格相等 ===
-expect(value).toEqual(expected)   // 深度相等
+expect(value).toBe(expected) // 严格相等 ===
+expect(value).toEqual(expected) // 深度相等
 expect(value).toBeNull()
 expect(value).toBeDefined()
 expect(value).toBeTruthy()
@@ -92,7 +92,7 @@ expect(value).toBeFalsy()
 // 数组/对象
 expect(array).toContain(item)
 expect(object).toHaveProperty('key')
-expect(fn).toThrow()              // 抛出异常
+expect(fn).toThrow() // 抛出异常
 
 // 异步
 await expect(promise).resolves.toBe(value)
@@ -104,9 +104,9 @@ await expect(promise).rejects.toThrow()
 ```json
 {
   "scripts": {
-    "test": "vitest run",           // 运行一次测试
-    "test:watch": "vitest",         // 监听模式
-    "test:coverage": "vitest run --coverage"  // 覆盖率报告
+    "test": "vitest run", // 运行一次测试
+    "test:watch": "vitest", // 监听模式
+    "test:coverage": "vitest run --coverage" // 覆盖率报告
   }
 }
 ```
@@ -131,6 +131,7 @@ test/
 ```
 
 我们选**风格1**，因为：
+
 - 修改源码时一眼看到测试
 - 重构移动文件时测试一起动
 - vitest 的 include 配置简单

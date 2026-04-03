@@ -16,6 +16,7 @@
 **目标**：用测试定义「你想让代码做什么」
 
 **规则**：
+
 - 先写测试，再写实现
 - 测试必须失败（验证测试本身是有效的）
 - 一次只测试一个小行为
@@ -49,6 +50,7 @@ describe('delay', () => {
 **目标**：用最简单的代码让测试变绿
 
 **规则**：
+
 - 代码可以丑陋，可以 hardcode
 - 目标是「通过测试」，不是「完美实现」
 - 不要提前设计，不要预判未来需求
@@ -73,6 +75,7 @@ export function delay(ms: number): Promise<void> {
 **目标**：在测试保护下改进代码质量
 
 **规则**：
+
 - 测试必须保持通过（绿灯）
 - 改进可读性、性能、结构
 - 消除重复，但不添加新功能
@@ -142,8 +145,7 @@ export function delay(ms: number): Promise<void> {
 
 ```typescript
 // delay.ts —— 简化版本
-export const delay = (ms: number): Promise<void> =>
-  new Promise(resolve => setTimeout(resolve, ms))
+export const delay = (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms))
 ```
 
 测试仍然通过 ✅✅✅
@@ -152,12 +154,12 @@ export const delay = (ms: number): Promise<void> =>
 
 ## TDD 的好处
 
-| 好处 | 说明 |
-|:---|:---|
+| 好处             | 说明                                   |
+| :--------------- | :------------------------------------- |
 | **设计压力后置** | 先写代码容易过度设计，先写测试聚焦需求 |
-| **测试即文档** | 测试描述了代码的行为契约 |
-| **重构安全网** | 有测试才能大胆重构 |
-| **减少调试** | 有问题立即发现，不会累积 |
+| **测试即文档**   | 测试描述了代码的行为契约               |
+| **重构安全网**   | 有测试才能大胆重构                     |
+| **减少调试**     | 有问题立即发现，不会累积               |
 
 ---
 
@@ -215,6 +217,7 @@ export function delay(ms: number, options?: { signal?: AbortSignal }) {
 ## 下一步
 
 选一个简单函数开始实战：
+
 - `delay` — 延迟执行 ✅（已完成示例）
 - `noop` — 空操作 ✅（项目中已有）
 - `once` — 只执行一次

@@ -13,13 +13,14 @@ PATCH - 向下兼容的问题修复 (fix)
 
 ## 为什么选择 Changesets？
 
-| 工具 | 用途 | 特点 |
-|:---|:---|:---|
-| 手动改版本号 | 小项目 | 容易忘、难追溯 |
-| standard-version | 自动生成 changelog | 已归档，不再维护 |
-| **changesets** | monorepo/单包都支持 | 社区活跃、GitHub 集成好 |
+| 工具             | 用途                | 特点                    |
+| :--------------- | :------------------ | :---------------------- |
+| 手动改版本号     | 小项目              | 容易忘、难追溯          |
+| standard-version | 自动生成 changelog  | 已归档，不再维护        |
+| **changesets**   | monorepo/单包都支持 | 社区活跃、GitHub 集成好 |
 
 **changesets 核心流程**：
+
 1. 开发时记录变更 → 产生 `.changeset/*.md`
 2. 发版时统一消费 → 自动改版本号 + 生成 changelog
 3. 推送到 npm
@@ -60,11 +61,11 @@ npx changeset init
 
 **关键配置**：
 
-| 字段 | 含义 |
-|:---|:---|
-| `access: "public"` | 发布到公共 npm（scoped 包默认 private） |
-| `baseBranch: "main"` | 主分支名称 |
-| `commit: false` | 不自动提交 git，手动控制 |
+| 字段                 | 含义                                    |
+| :------------------- | :-------------------------------------- |
+| `access: "public"`   | 发布到公共 npm（scoped 包默认 private） |
+| `baseBranch: "main"` | 主分支名称                              |
+| `commit: false`      | 不自动提交 git，手动控制                |
 
 ## 日常使用
 
@@ -75,6 +76,7 @@ npx changeset
 ```
 
 交互式选择：
+
 1. 选择变更包（单包项目直接回车）
 2. 选择版本类型（major/minor/patch）
 3. 写变更描述
@@ -98,6 +100,7 @@ npx changeset version
 ```
 
 执行后会：
+
 - 修改 `package.json` 中的版本号
 - 生成/更新 `CHANGELOG.md`
 - 删除已处理的 `.changeset/*.md`
@@ -186,13 +189,13 @@ npm publish --access public
 
 每次有意义的变更都要记录：
 
-| 变更类型 | 版本级别 | 示例 |
-|:---|:---|:---|
-| Bug fix | patch | 修复 noop 的类型定义 |
-| 新功能 | minor | 新增 delay 函数 |
-| API 移除/不兼容变更 | major | 改变函数参数顺序 |
-| 文档更新 | 不需要 | README 修改 |
-| 内部重构 | patch | 代码优化，无行为变化 |
+| 变更类型            | 版本级别 | 示例                 |
+| :------------------ | :------- | :------------------- |
+| Bug fix             | patch    | 修复 noop 的类型定义 |
+| 新功能              | minor    | 新增 delay 函数      |
+| API 移除/不兼容变更 | major    | 改变函数参数顺序     |
+| 文档更新            | 不需要   | README 修改          |
+| 内部重构            | patch    | 代码优化，无行为变化 |
 
 ### changelog 格式
 
@@ -236,12 +239,12 @@ rm .changeset/lucky-apples-rhyme.md
 
 现在你已经拥有了完整的 npm 包开发流程：
 
-| 阶段 | 工具 | 命令 |
-|:---|:---|:---|
+| 阶段 | 工具                | 命令                           |
+| :--- | :------------------ | :----------------------------- |
 | 开发 | TypeScript + Vitest | `pnpm dev` / `pnpm test:watch` |
-| 提交 | husky + lint-staged | `git commit` |
-| 版本 | changesets | `pnpm changeset` |
-| 发布 | npm | `pnpm release` |
+| 提交 | husky + lint-staged | `git commit`                   |
+| 版本 | changesets          | `pnpm changeset`               |
+| 发布 | npm                 | `pnpm release`                 |
 
 ---
 

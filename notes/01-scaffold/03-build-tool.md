@@ -2,12 +2,12 @@
 
 ## 为什么选 tsup？
 
-| 工具 | 优点 | 缺点 |
-|:---|:---|:---|
-| tsc | 官方出品，类型检查 | 不能打包，不处理依赖 |
-| tsup | 零配置、快、内置 ESM+CJS | 功能相对单一 |
-| Rollup | 灵活、插件丰富 | 配置复杂 |
-| esbuild | 极快 | 类型声明需额外处理 |
+| 工具    | 优点                     | 缺点                 |
+| :------ | :----------------------- | :------------------- |
+| tsc     | 官方出品，类型检查       | 不能打包，不处理依赖 |
+| tsup    | 零配置、快、内置 ESM+CJS | 功能相对单一         |
+| Rollup  | 灵活、插件丰富           | 配置复杂             |
+| esbuild | 极快                     | 类型声明需额外处理   |
 
 **tsup 定位**：简单场景下的最佳工具，一行配置搞定。
 
@@ -17,13 +17,13 @@
 import { defineConfig } from 'tsup'
 
 export default defineConfig({
-  entry: ['src/index.ts'],          // 入口文件
-  format: ['esm', 'cjs'],           // 输出 ESM + CJS 双格式
-  dts: true,                         // 生成类型声明
-  sourcemap: true,                   // 生成 source map
-  clean: true,                       // 清理 dist 目录
-  splitting: true,                   // 代码分割
-  minify: true,                      // 压缩代码
+  entry: ['src/index.ts'], // 入口文件
+  format: ['esm', 'cjs'], // 输出 ESM + CJS 双格式
+  dts: true, // 生成类型声明
+  sourcemap: true, // 生成 source map
+  clean: true, // 清理 dist 目录
+  splitting: true, // 代码分割
+  minify: true, // 压缩代码
 })
 ```
 
@@ -67,9 +67,9 @@ const { noop } = require('@c6i/es-sential')
 ```json
 {
   "type": "module",
-  "main": "./dist/index.cjs",      // CJS 入口
-  "module": "./dist/index.js",     // ESM 入口
-  "types": "./dist/index.d.ts",    // 类型入口
+  "main": "./dist/index.cjs", // CJS 入口
+  "module": "./dist/index.js", // ESM 入口
+  "types": "./dist/index.d.ts", // 类型入口
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -87,9 +87,9 @@ const { noop } = require('@c6i/es-sential')
 ```json
 {
   "scripts": {
-    "dev": "tsup --watch",     // 开发模式，监听变化
-    "build": "tsup",            // 生产构建
-    "clean": "rm -rf dist"      // 清理产物
+    "dev": "tsup --watch", // 开发模式，监听变化
+    "build": "tsup", // 生产构建
+    "clean": "rm -rf dist" // 清理产物
   }
 }
 ```
@@ -98,12 +98,12 @@ const { noop } = require('@c6i/es-sential')
 
 ### ESM vs CJS 的区别
 
-| 特性 | ESM | CJS |
-|:---|:---|:---|
-| 语法 | `import/export` | `require/module.exports` |
-| 静态分析 | ✅ 编译时确定 | ❌ 运行时动态 |
-| tree-shaking | ✅ 支持 | ❌ 不支持 |
-| 顶层 await | ✅ 支持 | ❌ 不支持 |
+| 特性         | ESM             | CJS                      |
+| :----------- | :-------------- | :----------------------- |
+| 语法         | `import/export` | `require/module.exports` |
+| 静态分析     | ✅ 编译时确定   | ❌ 运行时动态            |
+| tree-shaking | ✅ 支持         | ❌ 不支持                |
+| 顶层 await   | ✅ 支持         | ❌ 不支持                |
 
 ### Tree Shaking 是什么？
 

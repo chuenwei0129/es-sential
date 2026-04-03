@@ -3,6 +3,7 @@
 ## 为什么要用 Git Hooks？
 
 **问题**：代码提交到仓库前，怎么确保：
+
 - ✅ 没有类型错误
 - ✅ 代码格式正确
 - ✅ 测试能通过
@@ -64,6 +65,7 @@ export default {
 ```
 
 为什么用 `() => 'tsc --noEmit'`？
+
 - lint-staged 默认会给命令传文件名参数
 - tsc 不需要文件名（它自己读 tsconfig.include）
 - 用箭头函数返回字符串，lint-staged 就不会追加文件名
@@ -99,12 +101,13 @@ git commit -m "xxx" --no-verify  # 跳过 pre-commit
 
 ### 配置对比总结
 
-| 文件 | 触发时机 | 执行内容 |
-|:---|:---|:---|
+| 文件                | 触发时机     | 执行内容                |
+| :------------------ | :----------- | :---------------------- |
 | `.husky/pre-commit` | `git commit` | lint-staged（快速检查） |
-| `.husky/pre-push` | `git push` | 完整检查（类型 + 测试） |
+| `.husky/pre-push`   | `git push`   | 完整检查（类型 + 测试） |
 
 为什么分开？
+
 - `pre-commit` 要快（秒级），否则影响commit体验
 - `pre-push` 可以慢一点，因为 push 频率低
 
@@ -124,7 +127,7 @@ pnpm check          # typecheck + format + lint + test
 ✅ tsup 构建（ESM + CJS）  
 ✅ Vitest 测试 + TDD  
 ✅ ESLint + Prettier 代码规范  
-✅ husky + lint-staged 提交检查  
+✅ husky + lint-staged 提交检查
 
 ## 下一步
 
