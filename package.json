@@ -1,6 +1,6 @@
 {
   "name": "@c6i/es-sential",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "es-sential 是一个高质量的实用函数库，包含现代 JavaScript 项目中常用的函数。",
   "keywords": [],
   "type": "module",
